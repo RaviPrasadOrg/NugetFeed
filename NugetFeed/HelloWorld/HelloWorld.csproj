@@ -5,6 +5,7 @@
     <Authors>Ravi Ranjan Prasad</Authors>
     <Product>NugetFeed</Product>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+	<RepositoryUrl>https://github.com/RaviPrasadOrg/NugetFeed.git</RepositoryUrl>
   </PropertyGroup>
 
 </Project>
