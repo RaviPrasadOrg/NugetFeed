@@ -38,5 +38,5 @@ jobs:
       run: dotnet pack --no-build -c Release NugetFeed/HelloWorld/HelloWorld.csproj -o .
       
     - name: Publish Package
-      run: dotnet nuget push *.nupkg -s https://github.com/orgs/RaviPrasadOrg -k ${{secrets.NUGET_API_KEY}} --skip-duplicate
+      run: dotnet nuget push *.nupkg -s https://github.com/orgs/RaviPrasadOrg/v3/index.json -k ${{secrets.NUGET_API_KEY}} --skip-duplicate
       
