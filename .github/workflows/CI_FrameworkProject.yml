@@ -1,35 +1,33 @@
-name: CI Framework Test
+name: "Deploy to Nuget"
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: ["push"]
+
+env:
+PROJECT_PATH: "NugetFeedTest/HelloWorld/HelloWorld.csproj"
+PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}\output
+NUGET_SOURCE_URL: ""https://nuget.pkg.github.com/RaviPrasadOrg/index.json""
 
 jobs:
-  build:
-
-    runs-on: windows-latest
-
+  deploy:
+    name: "Deploy"
+    runs-on: "windows-latest"
     steps:
     - name: Checkout
       uses: actions/checkout@v2
                  
-    - name: Setup NuGet.exe for use with actions
-      uses: NuGet/setup-nuget@v1.0.5
+    - name: Install Dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+      dotnet-version: "4.8.x"
         
-    - name: Restore NuGet packages
-      run: nuget restore NugetFeedTest/NugetFeedTest.sln
+    - name: Restore package
+      run: dotnet restore ${{ env.PROJECT_PATH }}
       
-    - name: Setup MS Build
-      uses: microsoft/setup-msbuild@v1
-        
-    - name: Build Solution
-      run: msbuild NugetFeedTest/NugetFeedTest.sln /p:Configuration=Release /p:Platform="Any CPU"
-    
-    - name: Generate Package 
-      run: dotnet pack --configuration Release NugetFeedTest/HelloWorld/HelloWorld.csproj -o .
+    - name: Build project
+      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
       
-    - name: Publish Package
-      run: dotnet nuget push *.nupkg -s https://nuget.pkg.github.com/RaviPrasadOrg/index.json -k ${{secrets.NUGET_API_KEY}} --skip-duplicate
+    - name: Pack project
+      run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
       
+    - name: Push package
+      run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.NUGET_SOURCE_URL }}    
