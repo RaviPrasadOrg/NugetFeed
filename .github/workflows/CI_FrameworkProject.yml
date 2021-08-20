@@ -3,6 +3,7 @@ name: "Deploy to Nuget"
 on: ["push"]
 
 env:
+SOLUTION_PATH: "NugetFeedTest/NugetFeedTest.sln"
 PROJECT_PATH: "NugetFeedTest/HelloWorld/HelloWorld.csproj"
 PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}\output
 NUGET_SOURCE_URL: ""https://nuget.pkg.github.com/RaviPrasadOrg/index.json""
@@ -21,10 +22,10 @@ jobs:
       dotnet-version: "4.8.x"
         
     - name: Restore package
-      run: dotnet restore ${{ env.PROJECT_PATH }}
+      run: dotnet restore ${{ env.SOLUTION_PATH }}
       
     - name: Build project
-      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
+      run: dotnet build ${{ env.SOLUTION_PATH }} --no-restore --configuration Release
       
     - name: Pack project
       run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
