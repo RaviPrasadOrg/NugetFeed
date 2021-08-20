@@ -1,15 +1,15 @@
 name: CI Nuget Feed
 
 on:
-  push:
-    branches: [ master ]
+  #push:
+    #branches: [ master ]
   pull_request:
-    branches: [ master ]
+    #branches: [ master ]
 
-jobs:
-  build:
+#jobs:
+  #build:
 
-    runs-on: windows-latest
+    #runs-on: windows-latest
 
     #steps:
     #- name: Checkout
