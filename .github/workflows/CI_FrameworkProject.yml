@@ -1,29 +1,33 @@
 name: "Deploy to Nuget"
 
-on: 
-  push:
-    branches: [ master ]
-    
-jobs:
+on: ["push"]
 
+env:
+PROJECT_PATH: "NugetFeedTest/HelloWorld/HelloWorld.csproj"
+PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}\output
+NUGET_SOURCE_URL: ""https://nuget.pkg.github.com/RaviPrasadOrg/index.json""
+
+jobs:
   deploy:
-  
-    name: Deploy
-    
+    name: "Deploy"
     runs-on: "windows-latest"
-    
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-                         
+    
+    - name: Install Dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+      dotnet-version: "4.8.x"
+        
     - name: Restore package
-      run: dotnet restore NugetFeedTest/HelloWorld/HelloWorld.csproj
+      run: dotnet restore ${{ env.PROJECT_PATH }}
       
     - name: Build project
-      run: dotnet build NugetFeedTest/HelloWorld/HelloWorld.csproj --no-restore --configuration Release
+      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
       
-    - name: Pack project
-      run: dotnet pack NugetFeedTest/HelloWorld/HelloWorld.csproj --no-restore --no-build --configuration Release --include-symbols --output . #${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+      - name: Pack project
+      run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
       
     - name: Push package
-      run: dotnet nuget push *.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://nuget.pkg.github.com/RaviPrasadOrg/index.json    #${{ env.PACKAGE_OUTPUT_DIRECTORY }}\
+      run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.NUGET_SOURCE_URL }} 
