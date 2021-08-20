@@ -28,7 +28,7 @@ jobs:
       run: msbuild NugetFeedTest/NugetFeedTest.sln /p:Configuration=Release /p:Platform="Any CPU"
     
     - name: Generate Package 
-      run: nuget pack -c Release NugetFeedTest/HelloWorld/HelloWorld.csproj -o .
+      run: nuget pack -c Release NugetFeedTest/HelloWorld/HelloWorld.csproj
       
     - name: Publish Package
       run: nuget push *.nupkg -s https://nuget.pkg.github.com/RaviPrasadOrg/index.json -k ${{secrets.NUGET_API_KEY}} --skip-duplicate
