@@ -33,7 +33,7 @@ jobs:
       run: msbuild NugetFeedTest/NugetFeedTest.sln /p:Configuration=Release /p:Platform="Any CPU"
     
     - name: Pack Package 
-      run: dotnet pack --no-build -c Release NugetFeedTest/HelloWorld/HelloWorld.csproj -o .
+      run: msbuild Release NugetFeedTest/HelloWorld/HelloWorld.csproj /t:pack /p:Configuration=Release
       
     - name: Publish Package
       run: dotnet nuget push *.nupkg -s https://nuget.pkg.github.com/RaviPrasadOrg/index.json -k ${{secrets.NUGET_API_KEY}} --skip-duplicate
