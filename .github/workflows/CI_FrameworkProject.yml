@@ -3,12 +3,19 @@ name: "Deploy to Nuget"
 on: 
   push:
     branches: [ master ]
+    
+env:
+SOLUTION_PATH: "NugetFeedTest/NugetFeedTest.sln"
+PROJECT_PATH: "NugetFeedTest/HelloWorld/HelloWorld.csproj"
+PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}
+NUGET_SOURCE_URL: ""https://nuget.pkg.github.com/RaviPrasadOrg/index.json""
 
 jobs:
 
   deploy:
   
-    name: "Deploy"
+    name: Deploy
+    
     runs-on: "windows-latest"
     
     steps:
