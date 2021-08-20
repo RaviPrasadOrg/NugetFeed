@@ -33,7 +33,7 @@ jobs:
       run: msbuild NugetFeedTest/NugetFeedTest.sln /p:Configuration=Release /p:Platform="Any CPU"
     
     - name: Generate Spec 
-      run: dotnet nuget spec NugetFeedTest/HelloWorld/HelloWorld.csproj -o .
+      run: dotnet spec NugetFeedTest/HelloWorld/HelloWorld.csproj -o .
       
     - name: Package Nuget
       run: dotnet pack *.nuspec -o .
