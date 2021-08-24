@@ -27,7 +27,7 @@ jobs:
       run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
       
     - name: Pack project
-      run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols --output .
+      run: dotnet pack --no-build -c Release ${{ env.PROJECT_PATH }} -o .
       
     - name: Push package
       run: dotnet nuget push *.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.NUGET_SOURCE_URL }} 
