@@ -24,7 +24,7 @@ jobs:
       run: dotnet restore ${{ env.PROJECT_PATH }}
       
     - name: Build project
-      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
+      run: dotnet build NugetFeedTest/NugetFeedTest.sln --no-restore --configuration Release
       
     - name: Pack project
       run: dotnet pack --no-build -c Release ${{ env.PROJECT_PATH }} -o .
