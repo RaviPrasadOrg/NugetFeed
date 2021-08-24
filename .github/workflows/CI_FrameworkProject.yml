@@ -27,7 +27,8 @@ jobs:
       uses: microsoft/setup-msbuild@v1
       
     - name: Build project
-      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
+      run: msbuild NugetFeedTest/NugetFeedTest.sln /p:Configuration=Release /p:Platform="Any CPU"
+      #run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
       
     - name: Pack project
       run: msbuild /t:pack ${{ env.PROJECT_PATH }}
