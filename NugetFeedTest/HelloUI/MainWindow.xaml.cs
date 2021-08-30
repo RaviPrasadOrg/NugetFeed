@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NugetTestLibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +28,7 @@ namespace HelloUI
 
         private void OnButtonClick(object sender, RoutedEventArgs e)
         {
-
+            Class1 clss = new Class1();            
         }
     }
 }
