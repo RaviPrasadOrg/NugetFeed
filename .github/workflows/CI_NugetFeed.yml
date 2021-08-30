@@ -1,35 +1,35 @@
 name: CI Nuget Feed
 
 on:
-  push:
-    branches: [ master ]
+  #push:
+    #branches: [ master ]
   pull_request:
-    branches: [ master ]
+    #branches: [ master ]
 
-jobs:
-  build:
+#jobs:
+  #build:
 
-    runs-on: windows-latest
+    #runs-on: windows-latest
 
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+    #steps:
+    #- name: Checkout
+    #  uses: actions/checkout@v2
                  
-    - name: Setup NuGet.exe for use with actions
-      uses: NuGet/setup-nuget@v1.0.5
+    #- name: Setup NuGet.exe for use with actions
+    #  uses: NuGet/setup-nuget@v1.0.5
         
-    - name: Restore NuGet packages
-      run: nuget restore NugetFeed/NugetFeed.sln
+    #- name: Restore NuGet packages
+    #  run: nuget restore NugetFeed/NugetFeed.sln
       
-    - name: Setup MS Build
-      uses: microsoft/setup-msbuild@v1
+    #- name: Setup MS Build
+    #  uses: microsoft/setup-msbuild@v1
         
-    - name: Build Solution
-      run: msbuild NugetFeed/NugetFeed.sln /p:Configuration=Release /p:Platform="Any CPU"
+    #- name: Build Solution
+    #  run: msbuild NugetFeed/NugetFeed.sln /p:Configuration=Release /p:Platform="Any CPU"
     
-    - name: Generate Package 
-      run: dotnet pack --no-build -c Release NugetFeed/HelloWorld/HelloWorld.csproj -o .
+    #- name: Generate Package 
+    #  run: dotnet pack --no-build -c Release NugetFeed/HelloWorld/HelloWorld.csproj -o .
       
-    - name: Publish Package
-      run: dotnet nuget push *.nupkg -s https://nuget.pkg.github.com/RaviPrasadOrg/index.json -k ${{secrets.NUGET_API_KEY}} --skip-duplicate
+    #- name: Publish Package
+    #  run: dotnet nuget push *.nupkg -s https://nuget.pkg.github.com/RaviPrasadOrg/index.json -k ${{secrets.NUGET_API_KEY}} --skip-duplicate
       

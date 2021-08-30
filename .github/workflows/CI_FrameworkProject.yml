@@ -3,31 +3,36 @@ name: "Deploy to Nuget"
 on: ["push"]
 
 env:
-PROJECT_PATH: "NugetFeedTest/HelloWorld/HelloWorld.csproj"
-PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}\output
-NUGET_SOURCE_URL: ""https://nuget.pkg.github.com/RaviPrasadOrg/index.json""
+  PROJECT_PATH: "NugetFeedTest/HelloWorld/HelloWorld.csproj"
+  PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}
+  NUGET_SOURCE_URL: "https://nuget.pkg.github.com/RaviPrasadOrg/index.json"
 
 jobs:
-  deploy:
+  build:
     name: "Deploy"
     runs-on: "windows-latest"
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-                 
+    
     - name: Install Dotnet
       uses: actions/setup-dotnet@v1
       with:
-      dotnet-version: "4.8.x"
+        dotnet-version: "5.0.x"
         
     - name: Restore package
       run: dotnet restore ${{ env.PROJECT_PATH }}
       
+    - name: Setup MS Build
+      uses: microsoft/setup-msbuild@v1
+      
     - name: Build project
-      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
+      run: msbuild NugetFeedTest/NugetFeedTest.sln /p:Configuration=Release /p:Platform="Any CPU"
+      #run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
       
     - name: Pack project
-      run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+      run: msbuild /t:pack ${{ env.PROJECT_PATH }}
+      #run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols --output .
       
     - name: Push package
-      run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.NUGET_SOURCE_URL }}    
+      run: dotnet nuget push *.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.NUGET_SOURCE_URL }} 
